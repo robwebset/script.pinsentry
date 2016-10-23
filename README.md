@@ -4,9 +4,9 @@ PinSentry is an addon that will allow you to set a pin code that you can then fo
 
 Please read the wiki for more details:
 
-[Add-on:PinSentry](http://kodi.wiki/view/Add-on:PinSentry)
+[Add-on:PinSentry](https://github.com/robwebset/script.pinsentry/wiki)
 
-You can install this addon from: [Repository:robwebset](https://github.com/robwebset/repository.robwebset/blob/master/repos/repository.robwebset/repository.robwebset-1.0.0.zip) ([wiki](http://kodi.wiki/view/Repository:robwebset))
+You can install this addon from: [Repository:robwebset](https://github.com/robwebset/repository.robwebset/blob/master/repos/repository.robwebset/repository.robwebset-1.0.0.zip) ([wiki](https://github.com/robwebset/repository.robwebset/wiki))
 
 _Note: The classifications for each country will be added on request, please post a request on the forum and I will look at adding them (There are just too many to add all of them in one go - and pointless if no one is going to use them)_
 
@@ -15,5 +15,3 @@ __Donations__
 If you have found PinSentry useful and would like to help support future development and bug fixes, then please feel free to make a small donation.
 
 [![Donation](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZXP65UE8Y5GEQ)
-
-License: See [LICENSE.txt](LICENSE.txt)

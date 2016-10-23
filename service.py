@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+import sys
 import time
 import xbmc
 import xbmcaddon
 import xbmcgui
+
+if sys.version_info >= (2, 7):
+    import json
+else:
+    import simplejson as json
 
 # Import the common settings
 from resources.lib.settings import log
@@ -1021,66 +1027,78 @@ if __name__ == '__main__':
     navRestrictions = NavigationRestrictions()
     pvrMonitor = PvrMonitor()
 
-    loopsUntilUserControlCheck = 0
-    while (not xbmc.abortRequested):
-        # There are two types of startup, the first is a genuine startup when
-        # kodi is booted from cold, the second is when kodi is resumed from
-        # a sleep state, if restoring from sleep in memory then the PinSentry
-        # service will be restored from where it was and will not be a clean
-        # start, so we keep track of the current time and then, if too long has
-        # passed since the last time we updated the timer, we know the system
-        # has been in a sleep mode for a while
-        currentTime = int(time.time())
-        # Add on 10 seconds to detect sleep
-        if (lastActivityTime == 0) or ((lastActivityTime + 10) < currentTime):
-            # Check if we need to prompt for the pin when the system starts
-            if Settings.isPromptForPinOnStartup():
-                log("PinSentry: Prompting for pin on startup")
-                xbmcgui.Window(10000).setProperty("PinSentryPrompt", "true")
-            # Also need to reset the User pin control that restricts the amount of
-            # time that the user is allowed to view kodi for
-            if userCtrl not in [None, ""]:
-                del userCtrl
-            userCtrl = UserPinControl()
-            userCtrl.startupCheck()
+    json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddonDetails", "params": { "addonid": "repository.robwebset", "properties": ["enabled", "broken", "name", "author"]  }, "id": 1}')
+    json_response = json.loads(json_query)
 
-        # Make sure the last loop is recorded
-        lastActivityTime = currentTime
+    displayNotice = True
+    if ("result" in json_response) and ('addon' in json_response['result']):
+        addonItem = json_response['result']['addon']
+        if (addonItem['enabled'] is True) and (addonItem['broken'] is False) and (addonItem['type'] == 'xbmc.addon.repository') and (addonItem['addonid'] == 'repository.robwebset') and (addonItem['author'] == 'robwebset'):
+            displayNotice = False
 
-        # No need to perform the user control check every fraction of a second
-        # about every minute will be OK
-        if loopsUntilUserControlCheck < 1:
-            # If we are going to shut down then start closing down this script
-            if not userCtrl.check():
-                break
-            loopsUntilUserControlCheck = 600
-        else:
-            loopsUntilUserControlCheck = loopsUntilUserControlCheck - 1
+            loopsUntilUserControlCheck = 0
+            while (not xbmc.abortRequested):
+                # There are two types of startup, the first is a genuine startup when
+                # kodi is booted from cold, the second is when kodi is resumed from
+                # a sleep state, if restoring from sleep in memory then the PinSentry
+                # service will be restored from where it was and will not be a clean
+                # start, so we keep track of the current time and then, if too long has
+                # passed since the last time we updated the timer, we know the system
+                # has been in a sleep mode for a while
+                currentTime = int(time.time())
+                # Add on 10 seconds to detect sleep
+                if (lastActivityTime == 0) or ((lastActivityTime + 10) < currentTime):
+                    # Check if we need to prompt for the pin when the system starts
+                    if Settings.isPromptForPinOnStartup():
+                        log("PinSentry: Prompting for pin on startup")
+                        xbmcgui.Window(10000).setProperty("PinSentryPrompt", "true")
+                    # Also need to reset the User pin control that restricts the amount of
+                    # time that the user is allowed to view kodi for
+                    if userCtrl not in [None, ""]:
+                        del userCtrl
+                    userCtrl = UserPinControl()
+                    userCtrl.startupCheck()
 
-        xbmc.sleep(100)
-        userCtrl.checkDisplayStatus()
+                # Make sure the last loop is recorded
+                lastActivityTime = currentTime
 
-        # Check if the Pin is set, as no point prompting if it is not
-        if PinSentry.isPinSentryEnabled():
-            # Check to see if we need to restrict navigation access
-            if Settings.isActiveNavigation():
-                navRestrictions.checkTvShows()
-                navRestrictions.checkMovieSets()
-                if Settings.isActiveFileSource():
-                    navRestrictions.checkFileSources()
-            # Always call the plugin check as we have to check if the user is setting
-            # permissions using the PinSentry plugin
-            navRestrictions.checkPlugins()
-            navRestrictions.checkSettings()
-            navRestrictions.checkSystemSettings()
-            # Check if the dialog is being forced to display
-            navRestrictions.checkForcedDisplay()
+                # No need to perform the user control check every fraction of a second
+                # about every minute will be OK
+                if loopsUntilUserControlCheck < 1:
+                    # If we are going to shut down then start closing down this script
+                    if not userCtrl.check():
+                        break
+                    loopsUntilUserControlCheck = 600
+                else:
+                    loopsUntilUserControlCheck = loopsUntilUserControlCheck - 1
 
-            # Check if the PVR channel has changed
-            if pvrMonitor.hasPvrChannelChanged():
-                # Need to force the notification for the player as changing
-                # channel will not do this
-                playerMonitor.onPlayBackStarted()
+                xbmc.sleep(100)
+                userCtrl.checkDisplayStatus()
+
+                # Check if the Pin is set, as no point prompting if it is not
+                if PinSentry.isPinSentryEnabled():
+                    # Check to see if we need to restrict navigation access
+                    if Settings.isActiveNavigation():
+                        navRestrictions.checkTvShows()
+                        navRestrictions.checkMovieSets()
+                        if Settings.isActiveFileSource():
+                            navRestrictions.checkFileSources()
+                    # Always call the plugin check as we have to check if the user is setting
+                    # permissions using the PinSentry plugin
+                    navRestrictions.checkPlugins()
+                    navRestrictions.checkSettings()
+                    navRestrictions.checkSystemSettings()
+                    # Check if the dialog is being forced to display
+                    navRestrictions.checkForcedDisplay()
+
+                    # Check if the PVR channel has changed
+                    if pvrMonitor.hasPvrChannelChanged():
+                        # Need to force the notification for the player as changing
+                        # channel will not do this
+                        playerMonitor.onPlayBackStarted()
+
+    if displayNotice:
+        xbmc.executebuiltin('Notification("robwebset Repository Required","github.com/robwebset/repository.robwebset",10000,%s)' % ADDON.getAddonInfo('icon'))
 
     log("Stopping Pin Sentry Service")
     del pvrMonitor
