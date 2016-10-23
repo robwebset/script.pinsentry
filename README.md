@@ -8,7 +8,7 @@ Please read the wiki for more details:
 
 You can install this addon from: [Repository:robwebset](https://github.com/robwebset/repository.robwebset/blob/master/repos/repository.robwebset/repository.robwebset-1.0.0.zip) ([wiki](https://github.com/robwebset/repository.robwebset/wiki))
 
-_Note: The classifications for each country will be added on request, please post a request on the forum and I will look at adding them (There are just too many to add all of them in one go - and pointless if no one is going to use them)_
+_Note: The classifications for each country will be added on request (There are just too many to add all of them in one go - and pointless if no one is going to use them)_
 
 __Donations__
 
