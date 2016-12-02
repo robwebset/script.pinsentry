@@ -36,6 +36,7 @@ class MenuNavigator():
     PLUGINS = 'plugins'
     MUSICVIDEOS = 'musicvideos'
     FILESOURCE = 'filesource'
+    REPOSITORIES = 'repositories'
 
     CLASSIFICATIONS = 'classifications'
     CLASSIFICATIONS_MOVIES = 'classifications-movies'
@@ -102,6 +103,14 @@ class MenuNavigator():
         li.addContextMenuItems([], replaceItems=True)
         xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
 
+        # Repositories
+        if Settings.isActiveRepositories():
+            url = self._build_url({'mode': 'folder', 'foldername': MenuNavigator.REPOSITORIES})
+            li = xbmcgui.ListItem(ADDON.getLocalizedString(32214), iconImage=ICON)
+            li.setProperty("Fanart_Image", FANART)
+            li.addContextMenuItems([], replaceItems=True)
+            xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=True)
+
         # Add a blank line before the Operations
         li = xbmcgui.ListItem("", iconImage=ICON)
         li.setProperty("Fanart_Image", FANART)
@@ -139,6 +148,8 @@ class MenuNavigator():
             self._setList(MenuNavigator.FILESOURCE)
         elif foldername == MenuNavigator.CLASSIFICATIONS:
             self._setClassificationList(type, subType)
+        elif foldername == MenuNavigator.REPOSITORIES:
+            self._setList(MenuNavigator.REPOSITORIES)
 
     # Produce the list of videos and flag which ones with security details
     def _setList(self, target):
@@ -147,6 +158,8 @@ class MenuNavigator():
             items = self._setPluginList()
         elif target == MenuNavigator.FILESOURCE:
             items = self._setFileSourceList()
+        elif target == MenuNavigator.REPOSITORIES:
+            items = self._setRepositoryList()
         else:
             # Everything other plugins are forms of video
             items = self._getVideos(target)
@@ -281,6 +294,8 @@ class MenuNavigator():
             securityDetails = pinDB.getAllPluginsSecurity()
         elif type == MenuNavigator.FILESOURCE:
             securityDetails = pinDB.getAllFileSourcesSecurity()
+        elif type == MenuNavigator.REPOSITORIES:
+            securityDetails = pinDB.getAllRepositoriesSecurity()
 
         for item in items:
             # Default security to 0 (Not Set)
@@ -377,6 +392,36 @@ class MenuNavigator():
 
                 plugins.append(pluginDetails)
         return plugins
+
+    # Get the list of repos installed on the system
+    def _setRepositoryList(self):
+        # Make the call to find out all the addons that are installed
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": { "type": "xbmc.addon.repository", "properties": ["name", "thumbnail", "fanart"] }, "id": 1}')
+        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_response = simplejson.loads(json_query)
+        log(json_response)
+        repos = []
+        if ("result" in json_response) and ('addons' in json_response['result']):
+            # Check each of the repos that are installed on the system
+            for addonItem in json_response['result']['addons']:
+                addonId = addonItem['addonid']
+
+                pluginDetails = {}
+                pluginDetails['title'] = addonItem['name']
+                pluginDetails['dbid'] = addonId
+
+                if addonItem['thumbnail'] in [None, ""]:
+                    pluginDetails['thumbnail'] = 'DefaultAddon.png'
+                else:
+                    pluginDetails['thumbnail'] = addonItem['thumbnail']
+
+                if addonItem['fanart'] in [None, ""]:
+                    pluginDetails['fanart'] = FANART
+                else:
+                    pluginDetails['fanart'] = addonItem['fanart']
+
+                repos.append(pluginDetails)
+        return repos
 
     # get the list of plugins installed on the system
     def _setFileSourceList(self):
@@ -551,6 +596,8 @@ class MenuNavigator():
                 pinDB.setMusicVideoSecurityLevel(title, int(id), level)
             elif type == MenuNavigator.PLUGINS:
                 pinDB.setPluginSecurityLevel(title, id, level)
+            elif type == MenuNavigator.REPOSITORIES:
+                pinDB.setRepositorySecurityLevel(title, id, level)
             elif type == MenuNavigator.FILESOURCE:
                 pinDB.setFileSourceSecurityLevel(title, id, level)
             elif type == MenuNavigator.CLASSIFICATIONS_MOVIES:

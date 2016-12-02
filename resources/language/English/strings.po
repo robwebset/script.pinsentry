@@ -306,7 +306,11 @@ msgctxt "#32135"
 msgid "System Settings"
 msgstr ""
 
-#empty strings from id 32136 to 32200
+msgctxt "#32136"
+msgid "Repository Access"
+msgstr ""
+
+#empty strings from id 32137 to 32200
 
 msgctxt "#32201"
 msgid "Movies"
@@ -360,7 +364,11 @@ msgctxt "#32213"
 msgid "Force Pin Entry"
 msgstr ""
 
-#empty strings from id 32214 to 32300
+msgctxt "#32214"
+msgid "Repositories"
+msgstr ""
+
+#empty strings from id 32215 to 32300
 
 msgctxt "#32301"
 msgid "UK"

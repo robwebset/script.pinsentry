@@ -375,6 +375,7 @@ class NavigationRestrictions():
         self.lastTvShowChecked = ""
         self.lastMovieSetChecked = ""
         self.lastPluginChecked = ""
+        self.lastRepositoryChecked = ""
         self.canChangeSettings = False
         self.lastFileSource = ""
 
@@ -532,6 +533,51 @@ class NavigationRestrictions():
             # Clear the previous plugin as we will want to prompt for the pin again if the
             # user navigates there again
             self.lastPluginChecked = ""
+            PinSentry.displayInvalidPinMessage(securityLevel)
+
+    # Check if a user has navigated to a Repository that requires a Pin
+    def checkRepositories(self):
+        navPath = xbmc.getInfoLabel("Container.FolderPath")
+        if 'addons://' not in navPath:
+            # No Repository currently set
+            self.lastRepositoryChecked = ""
+            return
+
+        # Check if we are in a plugin location
+        repoName = xbmc.getInfoLabel("Container.FolderName")
+
+        if repoName in [None, "", self.lastRepositoryChecked]:
+            # No Repository currently set or this is a Repository that has already been checked
+            return
+
+        # If we reach here we have aPlugin that we need to check
+        log("NavigationRestrictions: Checking access to view Repository: %s" % repoName)
+        self.lastRepositoryChecked = repoName
+
+        securityLevel = 0
+        # Check to see if the user should have access to this repository
+        pinDB = PinSentryDB()
+        securityLevel = pinDB.getRepositorySecurityLevel(repoName)
+        if securityLevel < 1:
+            log("NavigationRestrictions: No security enabled for repository %s" % repoName)
+            return
+        del pinDB
+
+        # Check if we have already cached the pin number and at which level
+        if PinSentry.getCachedPinLevel() >= securityLevel:
+            log("NavigationRestrictions: Already cached pin at level %d, allowing access" % PinSentry.getCachedPinLevel())
+            return
+
+        # Prompt the user for the pin, returns True if they knew it
+        if PinSentry.promptUserForPin(securityLevel):
+            log("NavigationRestrictions: Allowed access to repository %s" % repoName)
+        else:
+            log("NavigationRestrictions: Not allowed access to repository %s which has security level %d" % (repoName, securityLevel))
+            # Move back to the Repositories Screen as they are not allowed where they are at the moment
+            xbmc.executebuiltin("ActivateWindow(Video,addons://repos/)", True)
+            # Clear the previous repository as we will want to prompt for the pin again if the
+            # user navigates there again
+            self.lastRepositoryChecked = ""
             PinSentry.displayInvalidPinMessage(securityLevel)
 
     # Checks to see if the PinSentry addons screen has been opened
@@ -1086,6 +1132,9 @@ if __name__ == '__main__':
                     # Always call the plugin check as we have to check if the user is setting
                     # permissions using the PinSentry plugin
                     navRestrictions.checkPlugins()
+
+                    if Settings.isActiveRepositories():
+                        navRestrictions.checkRepositories()
                     navRestrictions.checkSettings()
                     navRestrictions.checkSystemSettings()
                     # Check if the dialog is being forced to display

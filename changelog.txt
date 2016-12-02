@@ -1,3 +1,6 @@
+v100.3.0 (2016-12-02)
+- Support blocking Repositories
+
 v2.2.3 (2016-08-29)
 - Support prompting for a pin when returning from resume
 
