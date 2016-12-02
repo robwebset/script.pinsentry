@@ -51,7 +51,7 @@ class PinSentryDB():
             c.execute('''CREATE TABLE version (version text primary key)''')
 
             # Insert a row for the version
-            versionNum = "4"
+            versionNum = "5"
 
             # Run the statement passing in an array with one value
             c.execute("INSERT INTO version VALUES (?)", (versionNum,))
@@ -64,6 +64,7 @@ class PinSentryDB():
             c.execute('''CREATE TABLE Movies (id integer primary key, name text unique, dbid integer unique, level integer)''')
             c.execute('''CREATE TABLE MovieSets (id integer primary key, name text unique, dbid integer unique, level integer)''')
             c.execute('''CREATE TABLE Plugins (id integer primary key, name text unique, dbid text unique, level integer)''')
+            c.execute('''CREATE TABLE Repositories (id integer primary key, name text unique, dbid text unique, level integer)''')
 
             # This is in version 2
             c.execute('''CREATE TABLE MusicVideos (id integer primary key, name text unique, dbid integer unique, level integer)''')
@@ -125,11 +126,23 @@ class PinSentryDB():
         # If the database is at version three, add the version 4 tables
         if currentVersion < 4:
             log("PinSentryDB: Updating to version 4")
-            # Add the tables that were added in version 3
+            # Add the tables that were added in version 4
             c.execute('''CREATE TABLE ClassificationsMovies (id integer primary key, name text unique, dbid text, level integer)''')
             c.execute('''CREATE TABLE ClassificationsTV (id integer primary key, name text unique, dbid text, level integer)''')
             # Update the new version of the database
             currentVersion = 4
+            c.execute('DELETE FROM version')
+            c.execute("INSERT INTO version VALUES (?)", (currentVersion,))
+            # Save (commit) the changes
+            conn.commit()
+
+        # If the database is at version three, add the version 5 tables
+        if currentVersion < 5:
+            log("PinSentryDB: Updating to version 5")
+            # Add the tables that were added in version 5
+            c.execute('''CREATE TABLE Repositories (id integer primary key, name text unique, dbid text unique, level integer)''')
+            # Update the new version of the database
+            currentVersion = 5
             c.execute('DELETE FROM version')
             c.execute("INSERT INTO version VALUES (?)", (currentVersion,))
             # Save (commit) the changes
@@ -177,6 +190,15 @@ class PinSentryDB():
             ret = self._insertOrUpdate("Plugins", pluginName, dbid, level)
         else:
             self._deleteSecurityDetails("Plugins", pluginName)
+        return ret
+
+    # Set the security value for a given Repository
+    def setRepositorySecurityLevel(self, repoName, dbid, level=1):
+        ret = -1
+        if level != 0:
+            ret = self._insertOrUpdate("Repositories", repoName, dbid, level)
+        else:
+            self._deleteSecurityDetails("Repositories", repoName)
         return ret
 
     # Set the security value for a given Music Video
@@ -265,6 +287,10 @@ class PinSentryDB():
     def getPluginSecurityLevel(self, pluginName):
         return self._getSecurityLevel("Plugins", pluginName)
 
+    # Get the security value for a given Repository
+    def getRepositorySecurityLevel(self, pluginName):
+        return self._getSecurityLevel("Repositories", pluginName)
+
     # Get the security value for a given Music Video
     def getMusicVideoSecurityLevel(self, musicVideoName):
         return self._getSecurityLevel("MusicVideos", musicVideoName)
@@ -329,6 +355,10 @@ class PinSentryDB():
     # Select all Plugin entries from the database
     def getAllPluginsSecurity(self):
         return self._getAllSecurityDetails("Plugins")
+
+    # Select all Plugin entries from the database
+    def getAllRepositoriesSecurity(self):
+        return self._getAllSecurityDetails("Repositories")
 
     # Select all Music Video entries from the database
     def getAllMusicVideosSecurity(self):

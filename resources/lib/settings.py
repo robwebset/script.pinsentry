@@ -521,6 +521,10 @@ class Settings():
         return ADDON.getSetting("activitySystemSettings") == 'true'
 
     @staticmethod
+    def isActiveRepositories():
+        return ADDON.getSetting("activityRepositories") == 'true'
+
+    @staticmethod
     def isActiveFileSource():
         return ADDON.getSetting("activityFileSource") == 'true'
 
