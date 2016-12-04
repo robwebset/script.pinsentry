@@ -44,7 +44,7 @@ class Settings():
     INVALID_PIN_NOTIFICATION_NONE = 2
 
     # Flags from www.pixabay.com User:OpenClipartVectors
-    # https://pixabay.com/en/photos/?q=user%3AOpenClipartVectors+flag&image_type=&cat=&order=
+    # https://pixabay.com/en/photos/?image_type=&cat=&min_width=&min_height=&q=user%3AOpenClipart-Vectors+flag+square&order=popular
     flags = [{'lang': 32301, 'icon': 'UK/UK-flag.png'},
              {'lang': 32302, 'icon': 'USA/USA-flag.png'},
              {'lang': 32303, 'icon': 'Germany/Germany-flag.png'},
@@ -58,7 +58,8 @@ class Settings():
              {'lang': 32311, 'icon': 'Sweden/Sweden-flag.png'},
              {'lang': 32312, 'icon': 'Finland/Finland-flag.png'},
              {'lang': 32313, 'icon': 'Canada/Canada-flag.png'},
-             {'lang': 32315, 'icon': 'France/France-flag.png'}]
+             {'lang': 32315, 'icon': 'France/France-flag.png'},
+             {'lang': 32316, 'icon': 'Italy/Italy-flag.png'}]
 
     # http://en.wikipedia.org/wiki/Motion_picture_rating_system
     movieCassificationsNames = [{'id': 1, 'name': '%s - U', 'lang': 32301, 'match': 'U', 'icon': 'UK/UK-U.png'},  # UK
@@ -142,9 +143,9 @@ class Settings():
                                 # Finland
                                 {'id': 68, 'name': '%s - S', 'lang': 32312, 'match': 'S', 'icon': 'Finland/Finland-S.png'},
                                 {'id': 69, 'name': '%s - 7', 'lang': 32312, 'match': '7', 'icon': 'Finland/Finland-7.png'},
-                                {'id': 69, 'name': '%s - 12', 'lang': 32312, 'match': '12', 'icon': 'Finland/Finland-12.png'},
-                                {'id': 69, 'name': '%s - 16', 'lang': 32312, 'match': '16', 'icon': 'Finland/Finland-16.png'},
-                                {'id': 69, 'name': '%s - 18', 'lang': 32312, 'match': '18', 'icon': 'Finland/Finland-18.png'},
+                                {'id': 83, 'name': '%s - 12', 'lang': 32312, 'match': '12', 'icon': 'Finland/Finland-12.png'},
+                                {'id': 84, 'name': '%s - 16', 'lang': 32312, 'match': '16', 'icon': 'Finland/Finland-16.png'},
+                                {'id': 85, 'name': '%s - 18', 'lang': 32312, 'match': '18', 'icon': 'Finland/Finland-18.png'},
                                 # Canada
                                 {'id': 70, 'name': '%s - G', 'lang': 32313, 'match': 'G', 'icon': 'Canada/Canada-G.png'},
                                 {'id': 71, 'name': '%s - PG', 'lang': 32313, 'match': 'PG', 'icon': 'Canada/Canada-PG.png'},
@@ -159,7 +160,11 @@ class Settings():
                                 {'id': 79, 'name': '%s - U', 'lang': 32315, 'match': 'U', 'icon': None},
                                 {'id': 80, 'name': '%s - 12', 'lang': 32315, 'match': '12', 'icon': None},
                                 {'id': 81, 'name': '%s - 16', 'lang': 32315, 'match': '16', 'icon': None},
-                                {'id': 82, 'name': '%s - 18', 'lang': 32315, 'match': '18', 'icon': None}]
+                                {'id': 82, 'name': '%s - 18', 'lang': 32315, 'match': '18', 'icon': None},
+                                # Italy
+                                {'id': 86, 'name': '%s - T', 'lang': 32316, 'match': 'T', 'icon': 'Italy/Italy-T.png'},
+                                {'id': 87, 'name': '%s - VM14', 'lang': 32316, 'match': 'VM14', 'icon': 'Italy/Italy-VM14.png'},
+                                {'id': 88, 'name': '%s - VM18', 'lang': 32316, 'match': 'VM18', 'icon': 'Italy/Italy-VM18.png'}]
 
     # http://en.wikipedia.org/wiki/Television_content_rating_systems
     tvCassificationsNames = [{'id': 1, 'name': '%s - TV-Y', 'lang': 32302, 'match': 'TV-Y', 'icon': 'USA/USA-TV-Y.png'},  # USA

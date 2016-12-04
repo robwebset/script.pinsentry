@@ -429,3 +429,7 @@ msgstr ""
 msgctxt "#32315"
 msgid "France"
 msgstr ""
+
+msgctxt "#32316"
+msgid "Italy"
+msgstr ""

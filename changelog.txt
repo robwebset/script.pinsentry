@@ -1,3 +1,6 @@
+v100.3.1 (2016-12-04)
+- Add Italian Classification Support
+
 v100.3.0 (2016-12-02)
 - Support blocking Repositories
 
