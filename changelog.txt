@@ -1,3 +1,6 @@
+v100.4.0 (2016-12-15)
+- Update for support of URepo
+
 v100.3.1 (2016-12-04)
 - Add Italian Classification Support
 
@@ -54,3 +57,5 @@ v1.0.1 (2015-06-15)
 
 v1.0.0 (2015-06-07)
 - Initial Version
+
+Icon Font: Kristen ITC Regular
