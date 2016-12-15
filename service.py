@@ -1158,7 +1158,6 @@ if __name__ == '__main__':
                     # channel will not do this
                     playerMonitor.onPlayBackStarted()
 
-
     log("Stopping Pin Sentry Service")
     del pvrMonitor
     del userCtrl
