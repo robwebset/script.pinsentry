@@ -1,3 +1,6 @@
+v100.4.1 (2017-01-04)
+- Add classifications for Portugal, India, Spain and South Korea
+
 v100.4.0 (2016-12-15)
 - Update for support of URepo
 
