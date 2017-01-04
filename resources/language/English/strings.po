@@ -433,3 +433,19 @@ msgstr ""
 msgctxt "#32316"
 msgid "Italy"
 msgstr ""
+
+msgctxt "#32317"
+msgid "Spain"
+msgstr ""
+
+msgctxt "#32318"
+msgid "South Korea"
+msgstr ""
+
+msgctxt "#32319"
+msgid "India"
+msgstr ""
+
+msgctxt "#32320"
+msgid "Portugal"
+msgstr ""

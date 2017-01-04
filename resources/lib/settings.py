@@ -59,7 +59,11 @@ class Settings():
              {'lang': 32312, 'icon': 'Finland/Finland-flag.png'},
              {'lang': 32313, 'icon': 'Canada/Canada-flag.png'},
              {'lang': 32315, 'icon': 'France/France-flag.png'},
-             {'lang': 32316, 'icon': 'Italy/Italy-flag.png'}]
+             {'lang': 32316, 'icon': 'Italy/Italy-flag.png'},
+             {'lang': 32317, 'icon': 'Spain/Spain-flag.png'},
+             {'lang': 32318, 'icon': 'SouthKorea/SouthKorea-flag.png'},
+             {'lang': 32319, 'icon': 'India/India-flag.png'},
+             {'lang': 32320, 'icon': 'Portugal/Portugal-flag.png'}]
 
     # http://en.wikipedia.org/wiki/Motion_picture_rating_system
     movieCassificationsNames = [{'id': 1, 'name': '%s - U', 'lang': 32301, 'match': 'U', 'icon': 'UK/UK-U.png'},  # UK
@@ -164,7 +168,35 @@ class Settings():
                                 # Italy
                                 {'id': 86, 'name': '%s - T', 'lang': 32316, 'match': 'T', 'icon': 'Italy/Italy-T.png'},
                                 {'id': 87, 'name': '%s - VM14', 'lang': 32316, 'match': 'VM14', 'icon': 'Italy/Italy-VM14.png'},
-                                {'id': 88, 'name': '%s - VM18', 'lang': 32316, 'match': 'VM18', 'icon': 'Italy/Italy-VM18.png'}]
+                                {'id': 88, 'name': '%s - VM18', 'lang': 32316, 'match': 'VM18', 'icon': 'Italy/Italy-VM18.png'},
+                                # Spain
+                                {'id': 89, 'name': '%s - APTA', 'lang': 32317, 'match': 'A', 'icon': 'Spain/Spain-A.png'},
+                                {'id': 90, 'name': '%s - 7', 'lang': 32317, 'match': '7', 'icon': 'Spain/Spain-7.png'},
+                                {'id': 91, 'name': '%s - 12', 'lang': 32317, 'match': '12', 'icon': 'Spain/Spain-12.png'},
+                                {'id': 92, 'name': '%s - 16', 'lang': 32317, 'match': '12', 'icon': 'Spain/Spain-16.png'},
+                                {'id': 93, 'name': '%s - 18', 'lang': 32317, 'match': '12', 'icon': 'Spain/Spain-18.png'},
+                                {'id': 94, 'name': '%s - X', 'lang': 32317, 'match': 'X', 'icon': 'Spain/Spain-X.png'},
+                                # South Korea
+                                {'id': 95, 'name': '%s - All', 'lang': 32318, 'match': 'All', 'icon': 'SouthKorea/SouthKorea-All.png'},
+                                {'id': 96, 'name': '%s - 12', 'lang': 32318, 'match': '12', 'icon': 'SouthKorea/SouthKorea-12.png'},
+                                {'id': 97, 'name': '%s - 15', 'lang': 32318, 'match': '15', 'icon': 'SouthKorea/SouthKorea-15.png'},
+                                {'id': 98, 'name': '%s - R', 'lang': 32318, 'match': 'R', 'icon': 'SouthKorea/SouthKorea-R.png'},
+                                {'id': 99, 'name': '%s - Restricted Screening', 'lang': 32318, 'match': 'Restricted Screening', 'icon': 'SouthKorea/SouthKorea-Restricted.png'},
+                                # India
+                                {'id': 100, 'name': '%s - U', 'lang': 32319, 'match': 'U', 'icon': 'India/India-U.png'},
+                                {'id': 101, 'name': '%s - UA', 'lang': 32319, 'match': 'UA', 'icon': 'India/India-UA.png'},
+                                {'id': 102, 'name': '%s - A', 'lang': 32319, 'match': 'A', 'icon': 'India/India-A.png'},
+                                {'id': 103, 'name': '%s - S', 'lang': 32319, 'match': 'S', 'icon': 'India/India-S.png'},
+                                # France
+                                {'id': 104, 'name': '%s - A', 'lang': 32320, 'match': 'A', 'icon': None},
+                                {'id': 105, 'name': '%s - M/3', 'lang': 32320, 'match': 'M/3', 'icon': None},
+                                {'id': 106, 'name': '%s - M/4', 'lang': 32320, 'match': 'M/4', 'icon': None},
+                                {'id': 107, 'name': '%s - M/6', 'lang': 32320, 'match': 'M/6', 'icon': None},
+                                {'id': 108, 'name': '%s - M/12', 'lang': 32320, 'match': 'M/12', 'icon': None},
+                                {'id': 109, 'name': '%s - M/14', 'lang': 32320, 'match': 'M/14', 'icon': None},
+                                {'id': 110, 'name': '%s - M/16', 'lang': 32320, 'match': 'M/16', 'icon': None},
+                                {'id': 111, 'name': '%s - M/18', 'lang': 32320, 'match': 'M/18', 'icon': None},
+                                {'id': 112, 'name': '%s - P', 'lang': 32320, 'match': 'P', 'icon': None}]
 
     # http://en.wikipedia.org/wiki/Television_content_rating_systems
     tvCassificationsNames = [{'id': 1, 'name': '%s - TV-Y', 'lang': 32302, 'match': 'TV-Y', 'icon': 'USA/USA-TV-Y.png'},  # USA
@@ -218,11 +250,32 @@ class Settings():
                              {'id': 43, 'name': '%%s (%s) - 13+' % ADDON.getLocalizedString(32314), 'lang': 32313, 'match': '13+', 'icon': 'Canada/Canada-Quebec-13.png'},
                              {'id': 44, 'name': '%%s (%s) - 16+' % ADDON.getLocalizedString(32314), 'lang': 32313, 'match': '16+', 'icon': 'Canada/Canada-Quebec-16.png'},
                              {'id': 45, 'name': '%%s (%s) - 18+' % ADDON.getLocalizedString(32314), 'lang': 32313, 'match': '18+', 'icon': 'Canada/Canada-Quebec-18.png'},
-                             # Finland
+                             # France
                              {'id': 46, 'name': '%s - 10', 'lang': 32315, 'match': '10', 'icon': 'France/France-TV-10.png'},
                              {'id': 47, 'name': '%s - 12', 'lang': 32315, 'match': '12', 'icon': 'France/France-TV-12.png'},
                              {'id': 48, 'name': '%s - 16', 'lang': 32315, 'match': '16', 'icon': 'France/France-TV-16.png'},
-                             {'id': 49, 'name': '%s - 18', 'lang': 32315, 'match': '18', 'icon': 'France/France-TV-18.png'}]
+                             {'id': 49, 'name': '%s - 18', 'lang': 32315, 'match': '18', 'icon': 'France/France-TV-18.png'},
+                             # Spain
+                             {'id': 50, 'name': '%s - SC', 'lang': 32317, 'match': 'SC', 'icon': None},
+                             {'id': 51, 'name': '%s - Infantil', 'lang': 32317, 'match': 'Infantil', 'icon': None},
+                             {'id': 52, 'name': '%s - TP', 'lang': 32317, 'match': 'TP', 'icon': None},
+                             {'id': 53, 'name': '%s - 7', 'lang': 32317, 'match': '7', 'icon': None},
+                             {'id': 54, 'name': '%s - 10', 'lang': 32317, 'match': '10', 'icon': None},
+                             {'id': 55, 'name': '%s - 12', 'lang': 32317, 'match': '12', 'icon': None},
+                             {'id': 56, 'name': '%s - 13', 'lang': 32317, 'match': '13', 'icon': None},
+                             {'id': 57, 'name': '%s - 16', 'lang': 32317, 'match': '16', 'icon': None},
+                             {'id': 58, 'name': '%s - 18', 'lang': 32317, 'match': '18', 'icon': None},
+                             # South Korea
+                             {'id': 59, 'name': '%s - All', 'lang': 32318, 'match': 'All', 'icon': 'SouthKorea/SouthKorea-TV-All.png'},
+                             {'id': 60, 'name': '%s - 7', 'lang': 32318, 'match': '7', 'icon': 'SouthKorea/SouthKorea-TV-7.png'},
+                             {'id': 61, 'name': '%s - 12', 'lang': 32318, 'match': '12', 'icon': 'SouthKorea/SouthKorea-TV-12.png'},
+                             {'id': 62, 'name': '%s - 15', 'lang': 32318, 'match': '15', 'icon': 'SouthKorea/SouthKorea-TV-15.png'},
+                             {'id': 63, 'name': '%s - 19', 'lang': 32318, 'match': '19', 'icon': 'SouthKorea/SouthKorea-TV-19.png'},
+                             # Portugal
+                             {'id': 64, 'name': '%s - T', 'lang': 32320, 'match': 'T', 'icon': 'Portugal/Portugal-TV-T.png'},
+                             {'id': 65, 'name': '%s - 10', 'lang': 32320, 'match': '10', 'icon': 'Portugal/Portugal-TV-10.png'},
+                             {'id': 66, 'name': '%s - 12', 'lang': 32320, 'match': '12', 'icon': 'Portugal/Portugal-TV-12.png'},
+                             {'id': 67, 'name': '%s - 16', 'lang': 32320, 'match': '16', 'icon': 'Portugal/Portugal-TV-16.png'}]
 
     @staticmethod
     def reloadSettings():
