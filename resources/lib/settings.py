@@ -583,6 +583,10 @@ class Settings():
         return ADDON.getSetting("activityRepositories") == 'true'
 
     @staticmethod
+    def isActiveTvChannels():
+        return ADDON.getSetting("activityTvChannels") == 'true'
+
+    @staticmethod
     def isActiveFileSource():
         return ADDON.getSetting("activityFileSource") == 'true'
 
