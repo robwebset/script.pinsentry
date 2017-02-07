@@ -368,7 +368,11 @@ msgctxt "#32214"
 msgid "Repositories"
 msgstr ""
 
-#empty strings from id 32215 to 32300
+msgctxt "#32215"
+msgid "TV Channels"
+msgstr ""
+
+#empty strings from id 32216 to 32300
 
 msgctxt "#32301"
 msgid "UK"
