@@ -76,6 +76,9 @@ class PinSentryDB():
             c.execute('''CREATE TABLE ClassificationsMovies (id integer primary key, name text unique, dbid text, level integer)''')
             c.execute('''CREATE TABLE ClassificationsTV (id integer primary key, name text unique, dbid text, level integer)''')
 
+            # This is in version 6
+            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid text unique, level integer)''')
+
             # Save (commit) the changes
             conn.commit()
 
@@ -136,13 +139,25 @@ class PinSentryDB():
             # Save (commit) the changes
             conn.commit()
 
-        # If the database is at version three, add the version 5 tables
+        # If the database is at version four, add the version 5 tables
         if currentVersion < 5:
             log("PinSentryDB: Updating to version 5")
             # Add the tables that were added in version 5
             c.execute('''CREATE TABLE Repositories (id integer primary key, name text unique, dbid text unique, level integer)''')
             # Update the new version of the database
             currentVersion = 5
+            c.execute('DELETE FROM version')
+            c.execute("INSERT INTO version VALUES (?)", (currentVersion,))
+            # Save (commit) the changes
+            conn.commit()
+
+        # If the database is at version five, add the version 6 tables
+        if currentVersion < 6:
+            log("PinSentryDB: Updating to version 6")
+            # Add the tables that were added in version 6
+            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid text unique, level integer)''')
+            # Update the new version of the database
+            currentVersion = 6
             c.execute('DELETE FROM version')
             c.execute("INSERT INTO version VALUES (?)", (currentVersion,))
             # Save (commit) the changes
@@ -237,6 +252,15 @@ class PinSentryDB():
             self._deleteSecurityDetails("ClassificationsTV", id)
         return ret
 
+    # Set the security value for a given TV Channel
+    def setTvChannelSecurityLevel(self, id, channelName, level=1):
+        ret = -1
+        if level != 0:
+            ret = self._insertOrUpdate("TvChannels", id, channelName, level)
+        else:
+            self._deleteSecurityDetails("TvChannels", id)
+        return ret
+
     # Insert or replace an entry in the database
     def _insertOrUpdate(self, tableName, name, dbid, level=1):
         log("PinSentryDB: Adding %s %s (id:%s) at level %d" % (tableName, name, str(dbid), level))
@@ -310,6 +334,10 @@ class PinSentryDB():
     # Get the security value for a given TV Classification
     def getTvClassificationSecurityLevel(self, className):
         return self._getSecurityLevel("ClassificationsTV", className, 'dbid')
+
+    # Get the security value for a given TV Channel
+    def getTvChannelsSecurityLevel(self, channelId):
+        return self._getSecurityLevel("TvChannels", channelId, 'dbid')
 
     # Select the security entry from the database
     def _getSecurityLevel(self, tableName, name, dbField='name'):
@@ -386,6 +414,11 @@ class PinSentryDB():
         if useCertKey:
             keyCol = 2
         return self._getAllSecurityDetails("ClassificationsTV", keyCol)
+
+    # Get All File Source Paths entries from the database
+    def getAllTvChannelsSecurity(self):
+        # The path is stored in the ID column, so use that as the key
+        return self._getAllSecurityDetails("TvChannels", keyCol=2)
 
     # Select all security details from a given table in the database
     def _getAllSecurityDetails(self, tableName, keyCol=1):
