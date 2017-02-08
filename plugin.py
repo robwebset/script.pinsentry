@@ -469,31 +469,29 @@ class MenuNavigator():
         log(json_response)
         channels = []
         if ("result" in json_response) and ('channels' in json_response['result']):
+            # Load the existing security levels for the TV Channels
+            pinDB = PinSentryDB()
+            securityDetails = pinDB.getAllTvChannelsSecurity()
+            del pinDB
+
             # Check each of the channel groups that are installed on the system
             for pvrItem in json_response['result']['channels']:
                 # Skip hidden channels
                 if pvrItem['hidden']:
                     continue
 
-#                 channelId = pvrItem['channelid']
-#
-#                 channelDetails = {}
-#                 channelDetails['title'] = pvrItem['label']
-#                 channelDetails['dbid'] = channelId
-#                 channelDetails['fanart'] = FANART
-#
-#                 if pvrItem['thumbnail'] in [None, ""]:
-#                     channelDetails['thumbnail'] = 'DefaultAddonPVRClient.png'
-#                 else:
-#                     channelDetails['thumbnail'] = pvrItem['thumbnail']
-#
-#                 channels.append(channelDetails)
+                channelId = pvrItem['channelid']
+
+                iconImage = 'DefaultAddonPVRClient.png'
+                if pvrItem['thumbnail'] not in [None, ""]:
+                    iconImage = pvrItem['thumbnail']
 
                 securityLevel = 0
+                # Check the existing security level
+                if channelId in securityDetails:
+                    securityLevel = securityDetails[channelId]
 
-                # TODO: Check the existing security level
-
-                li = xbmcgui.ListItem(pvrItem['label'], iconImage=pvrItem['thumbnail'])
+                li = xbmcgui.ListItem(pvrItem['label'], iconImage=iconImage)
 
                 # Add a tick if security is set
                 if securityLevel > 0:
@@ -503,7 +501,7 @@ class MenuNavigator():
                 li.addContextMenuItems([], replaceItems=True)
                 li.setProperty("Fanart_Image", FANART)
 
-                url = self._build_url({'mode': 'setsecurity', 'type': MenuNavigator.TVCHANNELS, 'id': pvrItem['channelid'], 'title': pvrItem['label'], 'level': securityLevel})
+                url = self._build_url({'mode': 'setsecurity', 'type': MenuNavigator.TVCHANNELS, 'id': channelId, 'title': pvrItem['label'], 'level': securityLevel})
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
         xbmcplugin.endOfDirectory(self.addon_handle)
