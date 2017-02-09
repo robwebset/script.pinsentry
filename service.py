@@ -309,6 +309,17 @@ class PinSentryPlayer(xbmc.Player):
                     securityLevel = 0
                     log("PinSentryPlayer: Playing background media")
 
+        # Check for the case where the user is restricted from playing a Live TV Channel
+        if Settings.isActiveTvChannels():
+            # Get the Channel for the item currently playing
+            channelName = xbmc.getInfoLabel("VideoPlayer.ChannelName")
+            if channelName not in [None, ""]:
+                log("PinSentryPlayer: Playing Live TV Channel %s" % str(channelName))
+                # Check the security level required
+                pinDB = PinSentryDB()
+                securityLevel = pinDB.getTvChannelsSecurityLevel(str(channelName))
+                del pinDB
+
         # Check if security has been set on this item
         if securityLevel < 1:
             if title in [None, ""]:
@@ -333,12 +344,17 @@ class PinSentryPlayer(xbmc.Player):
         # Set the flag so other threads know we are processing this play request
         xbmcgui.Window(10000).setProperty("PinSentryPrompting", "true")
 
+        log("PinSentryPlayer: About to pause the video")
+
         # Pause the video so that we can prompt for the Pin to be entered
         # On some systems we could get notified that we have started playing a video
         # before it has actually been started, so keep trying to pause until we get
         # one that works
-        while not xbmc.getCondVisibility("Player.Paused"):
+        # Some PVR channels can not be paused, so only try a limited number of times
+        maxAttempts = 20
+        while (not xbmc.getCondVisibility("Player.Paused")) and (maxAttempts > 0):
             self.pause()
+            maxAttempts = maxAttempts - 1
 
         log("PinSentryPlayer: Pausing video to check if OK to play")
 
@@ -783,7 +799,7 @@ class PvrMonitor():
 
     def hasPvrChannelChanged(self):
         # Only need to handle PVR if we are configured to check playing videos
-        if (not Settings.isActiveVideoPlaying()) or (not xbmc.Player().isPlayingVideo()):
+        if (not (Settings.isActiveVideoPlaying() or Settings.isActiveTvChannels())) or (not xbmc.Player().isPlayingVideo()):
             self.lastPvrChannelNumber = None
             self.lastPlayedTitle = None
             return False

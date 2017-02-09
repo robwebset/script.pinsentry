@@ -51,7 +51,7 @@ class PinSentryDB():
             c.execute('''CREATE TABLE version (version text primary key)''')
 
             # Insert a row for the version
-            versionNum = "5"
+            versionNum = "6"
 
             # Run the statement passing in an array with one value
             c.execute("INSERT INTO version VALUES (?)", (versionNum,))
@@ -77,7 +77,7 @@ class PinSentryDB():
             c.execute('''CREATE TABLE ClassificationsTV (id integer primary key, name text unique, dbid text, level integer)''')
 
             # This is in version 6
-            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid text unique, level integer)''')
+            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid integer unique, level integer)''')
 
             # Save (commit) the changes
             conn.commit()
@@ -155,7 +155,7 @@ class PinSentryDB():
         if currentVersion < 6:
             log("PinSentryDB: Updating to version 6")
             # Add the tables that were added in version 6
-            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid text unique, level integer)''')
+            c.execute('''CREATE TABLE TvChannels (id integer primary key, name text unique, dbid integer unique, level integer)''')
             # Update the new version of the database
             currentVersion = 6
             c.execute('DELETE FROM version')
@@ -253,10 +253,10 @@ class PinSentryDB():
         return ret
 
     # Set the security value for a given TV Channel
-    def setTvChannelSecurityLevel(self, id, channelName, level=1):
+    def setTvChannelSecurityLevel(self, channelName, id, level=1):
         ret = -1
         if level != 0:
-            ret = self._insertOrUpdate("TvChannels", id, channelName, level)
+            ret = self._insertOrUpdate("TvChannels", channelName, id, level)
         else:
             self._deleteSecurityDetails("TvChannels", id)
         return ret
@@ -336,8 +336,8 @@ class PinSentryDB():
         return self._getSecurityLevel("ClassificationsTV", className, 'dbid')
 
     # Get the security value for a given TV Channel
-    def getTvChannelsSecurityLevel(self, channelId):
-        return self._getSecurityLevel("TvChannels", channelId, 'dbid')
+    def getTvChannelsSecurityLevel(self, channelName):
+        return self._getSecurityLevel("TvChannels", channelName)
 
     # Select the security entry from the database
     def _getSecurityLevel(self, tableName, name, dbField='name'):
@@ -418,7 +418,7 @@ class PinSentryDB():
     # Get All File Source Paths entries from the database
     def getAllTvChannelsSecurity(self):
         # The path is stored in the ID column, so use that as the key
-        return self._getAllSecurityDetails("TvChannels", keyCol=2)
+        return self._getAllSecurityDetails("TvChannels")
 
     # Select all security details from a given table in the database
     def _getAllSecurityDetails(self, tableName, keyCol=1):

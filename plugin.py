@@ -481,6 +481,7 @@ class MenuNavigator():
                     continue
 
                 channelId = pvrItem['channelid']
+                channelName = pvrItem['label']
 
                 iconImage = 'DefaultAddonPVRClient.png'
                 if pvrItem['thumbnail'] not in [None, ""]:
@@ -488,8 +489,8 @@ class MenuNavigator():
 
                 securityLevel = 0
                 # Check the existing security level
-                if channelId in securityDetails:
-                    securityLevel = securityDetails[channelId]
+                if channelName in securityDetails:
+                    securityLevel = securityDetails[channelName]
 
                 li = xbmcgui.ListItem(pvrItem['label'], iconImage=iconImage)
 
@@ -501,7 +502,7 @@ class MenuNavigator():
                 li.addContextMenuItems([], replaceItems=True)
                 li.setProperty("Fanart_Image", FANART)
 
-                url = self._build_url({'mode': 'setsecurity', 'type': MenuNavigator.TVCHANNELS, 'id': channelId, 'title': pvrItem['label'], 'level': securityLevel})
+                url = self._build_url({'mode': 'setsecurity', 'type': MenuNavigator.TVCHANNELS, 'id': channelId, 'title': channelName, 'level': securityLevel})
                 xbmcplugin.addDirectoryItem(handle=self.addon_handle, url=url, listitem=li, isFolder=False)
 
         xbmcplugin.endOfDirectory(self.addon_handle)
@@ -689,7 +690,7 @@ class MenuNavigator():
             elif type == MenuNavigator.CLASSIFICATIONS_TV:
                 pinDB.setTvClassificationSecurityLevel(id, title, level)
             elif type == MenuNavigator.TVCHANNELS:
-                pinDB.setTvChannelSecurityLevel(id, title, level)
+                pinDB.setTvChannelSecurityLevel(title, title, level)
             del pinDB
         else:
             # Handle the bulk operations like set All security for the movies

@@ -1,3 +1,6 @@
+v100.4.2
+- Add Live TV Channel Support
+
 v100.4.1 (2017-01-04)
 - Add classifications for Portugal, India, Spain and South Korea
 
