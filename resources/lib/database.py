@@ -258,7 +258,7 @@ class PinSentryDB():
         if level != 0:
             ret = self._insertOrUpdate("TvChannels", channelName, id, level)
         else:
-            self._deleteSecurityDetails("TvChannels", id)
+            self._deleteSecurityDetails("TvChannels", channelName)
         return ret
 
     # Insert or replace an entry in the database
