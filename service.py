@@ -149,7 +149,7 @@ class PinSentryPlayer(xbmc.Player):
         xbmc.Player.__init__(self)
 
     def onPlayBackStarted(self):
-        if not Settings.isActiveVideoPlaying():
+        if not (Settings.isActiveVideoPlaying() or Settings.isActiveTvChannels()):
             return
 
         log("PinSentryPlayer: Notification that something started playing")
