@@ -696,7 +696,7 @@ class MenuNavigator():
             elif type == MenuNavigator.CLASSIFICATIONS_TV:
                 pinDB.setTvClassificationSecurityLevel(id, title, level)
             elif type == MenuNavigator.TVCHANNELS:
-                pinDB.setTvChannelSecurityLevel(title, title, level)
+                pinDB.setTvChannelSecurityLevel(title, id, level)
             del pinDB
         else:
             # Handle the bulk operations like set All security for the movies
