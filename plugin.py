@@ -481,7 +481,13 @@ class MenuNavigator():
                     continue
 
                 channelId = pvrItem['channelid']
+
+                # Get the name of the channel
                 channelName = pvrItem['label']
+                try:
+                    channelName = pvrItem['label'].encode("utf-8")
+                except:
+                    pass
 
                 iconImage = 'DefaultAddonPVRClient.png'
                 if pvrItem['thumbnail'] not in [None, ""]:
