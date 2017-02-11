@@ -258,9 +258,11 @@ class PinSentryPlayer(xbmc.Player):
                 year = xbmc.getInfoLabel("VideoPlayer.Year")
                 if year in [None, ""]:
                     year = xbmc.getInfoLabel("ListItem.Year")
-                mpaaLookup = MpaaLookup()
-                cert = mpaaLookup.getMpaaRatings(title, year)
-                del mpaaLookup
+                # Only do the lookup if we are going to use it
+                if Settings.isActiveVideoPlaying():
+                    mpaaLookup = MpaaLookup()
+                    cert = mpaaLookup.getMpaaRatings(title, year)
+                    del mpaaLookup
 
             if cert not in [None, ""]:
                 log("PinSentryPlayer: Checking for certification restrictions: %s" % str(cert))
@@ -356,13 +358,23 @@ class PinSentryPlayer(xbmc.Player):
             self.pause()
             maxAttempts = maxAttempts - 1
 
-        log("PinSentryPlayer: Pausing video to check if OK to play")
+        muted = False
+        # Check if the video was paused
+        if not xbmc.getCondVisibility("Player.Paused"):
+            log("PinSentryPlayer: Muted video to check if OK to play")
+            # Failed to pause, most probably PVR, so mute instead
+            xbmc.executebuiltin('Mute', True)
+            muted = True
+        else:
+            log("PinSentryPlayer: Paused video to check if OK to play")
 
         # Prompt the user for the pin, returns True if they knew it
         if PinSentry.promptUserForPin(securityLevel):
             log("PinSentryPlayer: Resuming video")
             # Pausing again will start the video playing again
             self.pause()
+            if muted:
+                xbmc.executebuiltin('Mute', True)
         else:
             log("PinSentryPlayer: Stopping video")
             self.stop()
