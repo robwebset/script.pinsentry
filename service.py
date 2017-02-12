@@ -346,38 +346,39 @@ class PinSentryPlayer(xbmc.Player):
         # Set the flag so other threads know we are processing this play request
         xbmcgui.Window(10000).setProperty("PinSentryPrompting", "true")
 
-        log("PinSentryPlayer: About to pause the video")
-
         # Pause the video so that we can prompt for the Pin to be entered
         # On some systems we could get notified that we have started playing a video
         # before it has actually been started, so keep trying to pause until we get
         # one that works
-        # Some PVR channels can not be paused, so only try a limited number of times
-        maxAttempts = 20
-        while (not xbmc.getCondVisibility("Player.Paused")) and (maxAttempts > 0):
-            self.pause()
-            maxAttempts = maxAttempts - 1
-
+        # Some PVR channels can not be paused, so mute instead
         muted = False
-        # Check if the video was paused
-        if not xbmc.getCondVisibility("Player.Paused"):
+        if filePath.startswith("pvr://") and (not Settings.isPvrPauseSupported()):
             log("PinSentryPlayer: Muted video to check if OK to play")
             # Failed to pause, most probably PVR, so mute instead
-            xbmc.executebuiltin('Mute', True)
+            xbmc.executebuiltin('Mute', False)
             muted = True
         else:
+            log("PinSentryPlayer: About to pause the video")
+            maxAttempts = 100
+            while (not xbmc.getCondVisibility("Player.Paused")) and (maxAttempts > 0):
+                self.pause()
+                maxAttempts = maxAttempts - 1
+
             log("PinSentryPlayer: Paused video to check if OK to play")
 
         # Prompt the user for the pin, returns True if they knew it
         if PinSentry.promptUserForPin(securityLevel):
             log("PinSentryPlayer: Resuming video")
             # Pausing again will start the video playing again
-            self.pause()
             if muted:
-                xbmc.executebuiltin('Mute', True)
+                xbmc.executebuiltin('Mute', False)
+            else:
+                self.pause()
         else:
             log("PinSentryPlayer: Stopping video")
             self.stop()
+            if muted:
+                xbmc.executebuiltin('Mute', False)
             PinSentry.displayInvalidPinMessage(securityLevel)
 
         xbmcgui.Window(10000).clearProperty("PinSentryPrompting")

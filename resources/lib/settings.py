@@ -595,6 +595,10 @@ class Settings():
         return ADDON.getSetting("activityFileSourceNavigationOnly") != 'true'
 
     @staticmethod
+    def isPvrPauseSupported():
+        return ADDON.getSetting("pvrSupportsPause") == 'true'
+
+    @staticmethod
     def showSecurityLevelInPlugin():
         if Settings.getNumberOfLevels() < 2:
             return False
