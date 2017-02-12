@@ -172,7 +172,11 @@ msgctxt "#32037"
 msgid "Prompt For Pin On Startup"
 msgstr ""
 
-#empty strings from id 32038 to 32102
+msgctxt "#32038"
+msgid "PVR Supports Pause"
+msgstr ""
+
+#empty strings from id 32039 to 32102
 
 msgctxt "#32103"
 msgid "Enter Pin"
