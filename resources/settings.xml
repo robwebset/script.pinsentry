@@ -20,7 +20,7 @@
 	</category>
 	<category label="32125">
 		<setting id="activityVideoPlaying" type="bool" label="32126" default="true" />
-		<setting id="activityTvChannels" type="bool" subsetting="true" visible="eq(-1,true)" enable="eq(-1,true)" label="32215" default="false" />
+		<setting id="activityTvChannels" type="bool" label="32215" default="false" />
 		<setting id="activityNavigation" type="bool" label="32127" default="true" />
 		<setting id="activityPlugins" type="bool" label="32128" default="true" />
 		<setting id="activitySystemSettings" type="bool" label="32135" default="false" />
