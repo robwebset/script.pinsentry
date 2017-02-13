@@ -14,24 +14,28 @@ from settings import log
 class MpaaLookup():
     def __init__(self):
         self.imdb_url_prefix = 'http://www.omdbapi.com/'
+        # Flag to state that there was an error contacting the site and we should
+        # not try again by changing the name slightly
+        self.stopTrying = False
 
     # Perform a lookup for the MPAA rating, this will only return the US version
     # of the rating
     def getMpaaRatings(self, name, year=''):
+        self.stopTrying = False
         mpaa = None
         if year not in [None, "", "0"]:
             # First try it as a TV Show and year
             mpaa = self.getIMDB_mpaa_by_name(name, str(year), True)
 
         # Check to see if a match was found, if not try without the year
-        if mpaa in [None, ""]:
+        if (mpaa in [None, ""]) and (not self.stopTrying):
             mpaa = self.getIMDB_mpaa_by_name(name, '', True)
 
         # If no match was found as a TV Show, look for movies with this year
-        if (mpaa in [None, ""]) and (year not in [None, "", "0"]):
+        if (mpaa in [None, ""]) and (year not in [None, "", "0"]) and (not self.stopTrying):
             mpaa = self.getIMDB_mpaa_by_name(name, str(year), False)
 
-        if mpaa in [None, ""]:
+        if (mpaa in [None, ""]) and (not self.stopTrying):
             mpaa = self.getIMDB_mpaa_by_name(name, '', False)
 
         return mpaa
@@ -79,7 +83,7 @@ class MpaaLookup():
         try:
             req = urllib2.Request(url)
             req.add_header('Accept', 'application/json')
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen(req, timeout=2)
             resp_details = response.read()
             try:
                 response.close()
@@ -87,6 +91,7 @@ class MpaaLookup():
             except:
                 pass
         except:
+            self.stopTrying = True
             log("MpaaLookup: Failed to retrieve details from %s: %s" % (url, traceback.format_exc()))
 
         return resp_details
