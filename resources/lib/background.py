@@ -22,7 +22,7 @@ class Background(xbmcgui.WindowXML):
         return Background("pinsentry-background.xml", CWD)
 
     def onInit(self):
-        xbmcgui.WindowXMLDialog.onInit(self)
+        xbmcgui.WindowXML.onInit(self)
 
         # Get the background image to be used
         bgImage = Settings.getBackgroundImage()
