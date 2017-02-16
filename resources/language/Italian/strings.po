@@ -158,7 +158,7 @@ msgstr "Durata di visione giornaliera autorizzata (Minuti)"
 
 msgctxt "#32034"
 msgid "Warn User When Remaining Time Is (Minutes)"
-msgstr "Avvisa l'Utente di quanto tempo e' rimasto (minuti)"
+msgstr "Avvisa l'Utente di quanto tempo è rimasto (minuti)"
 
 msgctxt "#32035"
 msgid "Users Name"
@@ -172,7 +172,11 @@ msgctxt "#32037"
 msgid "Prompt For Pin On Startup"
 msgstr "Richiedi il Pin ad ogni avvio"
 
-#empty strings from id 32038 to 32102
+msgctxt "#32038"
+msgid "PVR Supports Pause"
+msgstr "Metti in Pausa il PVR"
+
+#empty strings from id 32039 to 32102
 
 msgctxt "#32103"
 msgid "Enter Pin"
@@ -196,7 +200,7 @@ msgstr "Reinserire nuovo Pin"
 
 msgctxt "#32108"
 msgid "Newly entered pins do not match, pin remains unchanged."
-msgstr "I codici Pin non corrispondono, il Pin attuale non e' stato modificato."
+msgstr "I codici Pin non corrispondono, il Pin attuale non è stato modificato."
 
 msgctxt "#32109"
 msgid "Incorrect number of digits entered for the pin."
@@ -212,7 +216,7 @@ msgstr "Limita le fonti dei file solo durante la navigazione"
 
 msgctxt "#32112"
 msgid "Entered pin clashes with an existing pin."
-msgstr "Il codice Pin inserito e' in conflitto con un Pin esistente."
+msgstr "Il codice Pin inserito è in conflitto con un Pin esistente."
 
 msgctxt "#32113"
 msgid "Clean Database"
@@ -264,7 +268,7 @@ msgstr "Immagine di sfondo Personalizzata"
 
 msgctxt "#32125"
 msgid "Activity"
-msgstr "Attivita'"
+msgstr "Attività"
 
 msgctxt "#32126"
 msgid "Video Playing"
@@ -284,7 +288,7 @@ msgstr "Riprova?"
 
 msgctxt "#32130"
 msgid "Current time outside users viewing times"
-msgstr "L'orario attuale e' fuori tempo consentito per la visualizzazione da parte degli utenti"
+msgstr "L'orario attuale è fuori tempo consentito per la visualizzazione da parte degli utenti"
 
 msgctxt "#32131"
 msgid "Allowance Remaining (Minutes)"
@@ -368,7 +372,11 @@ msgctxt "#32214"
 msgid "Repositories"
 msgstr "Repository"
 
-#empty strings from id 32215 to 32300
+msgctxt "#32215"
+msgid "TV Channels"
+msgstr "Canali TV"
+
+#empty strings from id 32216 to 32300
 
 msgctxt "#32301"
 msgid "UK"
