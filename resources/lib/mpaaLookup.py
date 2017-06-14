@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import sys
 import urllib2
 import traceback
@@ -43,8 +44,14 @@ class MpaaLookup():
     # Get the MPAA from imdb
     def getIMDB_mpaa_by_name(self, name, year='', isTvShow=True):
         log("IdLookup: Getting IMDB Mpaa by name %s, year=%s, tv=%s" % (name, year, str(isTvShow)))
-        clean_name = urllib2.quote(name)
-        query = '?t=%s' % clean_name
+
+        clean_name = name
+        # If we have been passed a file name remove the file type
+        if name.endswith('.mp4') or name.endswith('.mkv') or name.endswith('.avi') or name.endswith('.mov'):
+            clean_name = os.path.splitext(clean_name)[0]
+
+        clean_name = urllib2.quote(clean_name)
+        query = '?apikey=49d311ec&t=%s' % clean_name
 
         if year not in [None, '', '0']:
             query = '%s&y=%s' % (query, str(year))
