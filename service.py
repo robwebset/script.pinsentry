@@ -558,7 +558,7 @@ class NavigationRestrictions():
         else:
             log("NavigationRestrictions: Not allowed access to plugin %s which has security level %d" % (pluginName, securityLevel))
             # Move back to the Video plugin Screen as they are not allowed where they are at the moment
-            xbmc.executebuiltin("ActivateWindow(Video,addons://sources/video/)", True)
+            xbmc.executebuiltin("ActivateWindow(Home)", True)
             # Clear the previous plugin as we will want to prompt for the pin again if the
             # user navigates there again
             self.lastPluginChecked = ""
