@@ -1,9 +1,6 @@
 [[https://github.com/robwebset/script.pinsentry/raw/master/icon.png]]
 
 == Introduction ==
-You can install this addon from: [https://www.urepo.org URepo Repository]
-<br />
-<br />
 PinSentry is an addon that will allow you to set a pin code that you can then force to be input when you play a particular video file or navigate into a given TV Show or Plugin. There is also an option to force the user to enter a pin when the system starts, and then restrict the amount of time the user is allowed each day.
 
 After install you need to:
